@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Avatar from './components/Avatar';
 
 export default function Home() {
   const [messages, setMessages] = useState([]);
@@ -123,4 +124,5 @@ export default function Home() {
       </div>
     </div>
   );
+
 }
