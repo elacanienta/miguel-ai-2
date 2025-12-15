@@ -45,13 +45,8 @@ export default function Home() {
           
           {/* Avatar Section */}
           <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
-            <div className="aspect-square bg-gradient-to-br from-purple-500/20 to-blue-500/20 rounded-xl flex items-center justify-center">
-              <div className="text-center">
-                <div className="w-32 h-32 bg-white/20 rounded-full mx-auto mb-4 flex items-center justify-center">
-                  <span className="text-6xl">👤</span>
-                </div>
-                <p className="text-white/60">Ready Player Me Avatar Loading...</p>
-              </div>
+            <div className="aspect-square bg-gradient-to-br from-purple-500/20 to-blue-500/20 rounded-xl overflow-hidden">
+              <Avatar isSpeaking={isLoading} />
             </div>
           </div>
 
@@ -126,3 +121,4 @@ export default function Home() {
   );
 
 }
+
