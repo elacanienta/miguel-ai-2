@@ -10,9 +10,8 @@ export default function Avatar({ isSpeaking }) {
     if (!containerRef.current) return;
 
     const iframe = document.createElement('iframe');
-    const scene = isSpeaking ? 'fullbody-portrait-v1-talking' : 'fullbody-portrait-v1';
     
-    iframe.src = `https://models.readyplayer.me/render?model=${avatarUrl}&scene=${scene}&quality=high`;
+    iframe.src = `https://models.readyplayer.me/render?model=${avatarUrl}&scene=fullbody-portrait-v1&quality=high`;
     iframe.style.width = '100%';
     iframe.style.height = '100%';
     iframe.style.border = 'none';
@@ -31,8 +30,8 @@ export default function Avatar({ isSpeaking }) {
   return (
     <div 
       ref={containerRef} 
-      className="w-full h-full rounded-xl overflow-hidden"
-      style={{ minHeight: '400px' }}
+      className="w-full h-full rounded-xl overflow-hidden bg-gray-900"
+      style={{ minHeight: '500px' }}
     />
   );
 }
