@@ -1,27 +1,49 @@
 'use client';
 
-export default function Avatar({ isSpeaking }) {
+import { useState, useRef, useEffect } from 'react';
+
+export default function Avatar({ isSpeaking, videoToPlay, onVideoEnd }) {
+  const videoRef = useRef(null);
+  const [isPlayingVideo, setIsPlayingVideo] = useState(false);
+
+  useEffect(() => {
+    if (videoToPlay && videoRef.current) {
+      setIsPlayingVideo(true);
+      videoRef.current.currentTime = 0;
+      videoRef.current.play();
+    }
+  }, [videoToPlay]);
+
+  const handleVideoEnd = () => {
+    setIsPlayingVideo(false);
+    if (onVideoEnd) {
+      onVideoEnd();
+    }
+  };
+
   return (
     <div className="w-full h-full relative bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center overflow-hidden">
+      {/* Static Image - Your ChatGPT Avatar */}
       <img
-        src="https://models.readyplayer.me/693f7a76fe6f676b663b7cc4.png?scene=fullbody-portrait-v1&blendShapes[Wolf3D_Head]=0.5"
-        alt="Miguel's 3D Avatar"
-        className="w-full h-full object-cover"
-        onError={(e) => {
-          // Fallback if image fails
-          e.target.outerHTML = `
-            <div class="flex items-center justify-center w-full h-full">
-              <div class="text-center">
-                <div class="w-24 h-24 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-4xl font-bold mx-auto mb-3 shadow-xl">
-                  M
-                </div>
-                <p class="text-sm text-gray-600 font-medium">Miguel</p>
-                <p class="text-xs text-gray-400">CS Graduate • AI Specialist</p>
-              </div>
-            </div>
-          `;
-        }}
+        src="/Avatar.png"
+        alt="Miguel's Avatar"
+        className={`w-full h-full object-cover transition-opacity duration-500 ${isPlayingVideo ? 'opacity-0' : 'opacity-100'}`}
       />
+
+      {/* Video Overlay */}
+      {videoToPlay && (
+        <video
+          ref={videoRef}
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${isPlayingVideo ? 'opacity-100' : 'opacity-0'}`}
+          onEnded={handleVideoEnd}
+          playsInline
+          disablePictureInPicture
+          controlsList="nodownload nofullscreen noremoteplayback"
+          style={{ pointerEvents: 'none' }}
+        >
+          <source src={videoToPlay} type="video/mp4" />
+        </video>
+      )}
     </div>
   );
 }
