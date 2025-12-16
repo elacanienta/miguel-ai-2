@@ -8,6 +8,7 @@ export default function Home() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [currentVideo, setCurrentVideo] = useState(null);  // ADD THIS
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -49,6 +50,14 @@ export default function Home() {
     
     setIsLoading(false);
   };
+  
+  const playVideo = (videoName) => {
+    setCurrentVideo(`/${videoName}.mp4`);
+  };
+  
+  const handleVideoEnd = () => {
+    setCurrentVideo(null);
+  };
 
   const quickPrompts = [
     "Tell me about your AI projects",
@@ -83,14 +92,21 @@ export default function Home() {
           <div className="grid md:grid-cols-3 gap-6 items-center">
             <div className="md:col-span-1">
               <div className="aspect-square rounded-xl overflow-hidden bg-gradient-to-br from-blue-50 to-purple-50 border border-gray-200">
-                <Avatar isSpeaking={isLoading} />
+                <Avatar 
+                  isSpeaking={isLoading} 
+                  videoToPlay={currentVideo}
+                  onVideoEnd={handleVideoEnd}
+                />
               </div>
             </div>
             <div className="md:col-span-2 space-y-3">
               <h2 className="text-2xl font-semibold text-gray-900">Miguel Lacanienta</h2>
               <p className="text-gray-600">BS Computer Science • AI Specialization • Mapúa University</p>
               <div className="flex flex-wrap gap-2">
-                <button className="px-4 py-2 rounded-full bg-blue-50 text-blue-700 text-sm font-medium border border-blue-200 hover:bg-blue-100 hover:border-blue-300 transition-all duration-200 cursor-pointer">
+                <button 
+                  onClick={() => playVideo('Objective')}
+                  className="px-4 py-2 rounded-full bg-blue-50 text-blue-700 text-sm font-medium border border-blue-200 hover:bg-blue-100 hover:border-blue-300 transition-all duration-200 cursor-pointer"
+                >
                   Objective
                 </button>
                 <button className="px-4 py-2 rounded-full bg-purple-50 text-purple-700 text-sm font-medium border border-purple-200 hover:bg-purple-100 hover:border-purple-300 transition-all duration-200 cursor-pointer">
