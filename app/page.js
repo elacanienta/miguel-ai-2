@@ -90,8 +90,8 @@ export default function Home() {
               <p className="text-gray-600">BS Computer Science • AI Specialization • Mapúa University</p>
               <div className="flex flex-wrap gap-2">
                 <span className="px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-sm border border-blue-200">Python</span>
-                <span className="px-3 py-1 rounded-full bg-purple-50 text-purple-700 text-sm border border-purple-200">AI/ML</span>
-                <span className="px-3 py-1 rounded-full bg-pink-50 text-pink-700 text-sm border border-pink-200">RAG Systems</span>
+                <span className="px-3 py-1 rounded-full bg-purple-50 text-purple-700 text-sm border border-purple-200">Power Platform</span>
+                <span className="px-3 py-1 rounded-full bg-pink-50 text-pink-700 text-sm border border-pink-200">Azure</span>
               </div>
             </div>
           </div>
@@ -201,3 +201,4 @@ export default function Home() {
     </div>
   );
 }
+
