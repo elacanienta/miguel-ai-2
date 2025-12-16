@@ -135,8 +135,24 @@ export default function Home() {
                     <p className="text-sm font-medium mb-2 text-gray-500">
                       {msg.role === 'user' ? 'You' : 'Miguel'}
                     </p>
-                    <div className="text-base leading-relaxed text-gray-800">
-                      {msg.content}
+                    <div className="text-base leading-relaxed text-gray-800 whitespace-pre-line">
+                      {msg.content.split('\n').map((line, i) => {
+                        // Check if line starts with bullet point
+                        if (line.trim().startsWith('•') || line.trim().startsWith('-')) {
+                          return (
+                            <div key={i} className="flex gap-2 my-1">
+                              <span className="text-blue-600">•</span>
+                              <span>{line.replace(/^[•\-]\s*/, '')}</span>
+                            </div>
+                          );
+                        }
+                        // Check if it's a header (ends with colon or all caps)
+                        if (line.trim().endsWith(':') || (line.trim().length > 0 && line.trim() === line.trim().toUpperCase())) {
+                          return <div key={i} className="font-semibold mt-3 mb-1">{line}</div>;
+                        }
+                        // Regular text
+                        return line.trim() ? <div key={i} className="my-1">{line}</div> : <div key={i} className="h-2"></div>;
+                      })}
                     </div>
                   </div>
                 </div>
@@ -201,6 +217,7 @@ export default function Home() {
     </div>
   );
 }
+
 
 
 
