@@ -85,10 +85,10 @@ export default function Home() {
       </header>
 
       {/* Main Content */}
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="max-w-4xl mx-auto px-4 py-4">
         
         {/* Avatar Card - Compact */}
-        <div className="mb-8 bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+        <div className="mb-6 bg-white rounded-2xl p-4 border border-gray-200 shadow-sm">
           <div className="grid md:grid-cols-3 gap-6 items-center">
             <div className="md:col-span-1">
               <div className="aspect-[2/3] rounded-xl overflow-hidden bg-gradient-to-br from-blue-50 to-purple-50 border border-gray-200">
@@ -129,7 +129,7 @@ export default function Home() {
         {/* Chat Area */}
         <div className="space-y-6">
           {messages.length === 0 ? (
-            <div className="text-center py-12">
+            <div className="text-center py-6">
               <h3 className="text-4xl font-medium text-gray-900 mb-4">Hi, I'm Miguel 👋</h3>
               <p className="text-gray-600 text-lg mb-8">What would you like to know?</p>
               
@@ -248,6 +248,7 @@ export default function Home() {
     </div>
   );
 }
+
 
 
 
