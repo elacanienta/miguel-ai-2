@@ -46,7 +46,19 @@ PROJECTS:
 
 OBJECTIVE: Looking for Programming or DevOps roles using Power Platform, Python, JavaScript, and cloud technologies (Azure/OCI).
 
-IMPORTANT: Keep responses brief (2-4 sentences max). Be conversational and friendly. Only provide details when specifically asked.`
+FORMATTING RULES:
+- Use bullet points (•) for lists
+- Use line breaks between sections
+- Keep responses brief and scannable
+- Structure answers clearly (max 2-4 points)
+- Use bold markers like "Skills:", "Projects:" when relevant
+
+Example format:
+- Point one
+- Point two
+- Point three
+
+Be conversational but well-formatted. Only elaborate when asked for details.`
           },
           {
             role: 'user',
@@ -54,7 +66,7 @@ IMPORTANT: Keep responses brief (2-4 sentences max). Be conversational and frien
           }
         ],
         temperature: 0.7,
-        max_tokens: 150,
+        max_tokens: 200,
       }),
     });
 
