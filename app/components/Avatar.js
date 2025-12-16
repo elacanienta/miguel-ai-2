@@ -36,9 +36,10 @@ export default function Avatar({ isSpeaking, videoToPlay, onVideoEnd }) {
 
   return (
     <div className="w-full h-full relative bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center overflow-hidden">
+      {/* Idle Loop Video */}
       <video
         ref={idleVideoRef}
-        className={`w-full h-full object-cover transition-opacity duration-500 ${isPlayingVideo ? 'opacity-0' : 'opacity-100'}`}
+        className={`w-full h-full object-contain transition-opacity duration-500 ${isPlayingVideo ? 'opacity-0' : 'opacity-100'}`}
         loop
         muted
         playsInline
@@ -49,10 +50,11 @@ export default function Avatar({ isSpeaking, videoToPlay, onVideoEnd }) {
         <source src="/Idle.mp4" type="video/mp4" />
       </video>
 
+      {/* Content Video Overlay */}
       {videoToPlay && (
         <video
           ref={videoRef}
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${isPlayingVideo ? 'opacity-100' : 'opacity-0'}`}
+          className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ${isPlayingVideo ? 'opacity-100' : 'opacity-0'}`}
           onEnded={handleVideoEnd}
           playsInline
           disablePictureInPicture
