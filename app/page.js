@@ -65,7 +65,7 @@ export default function Home() {
             <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-semibold text-sm">
               M
             </div>
-            <span className="text-lg font-medium text-gray-800">Miguel AI</span>
+            <span className="text-lg font-medium text-gray-800">Miguel&apos;s Digital Twin</span>
           </div>
           <div className="flex items-center gap-2 text-xs text-gray-500">
             <div className="w-2 h-2 rounded-full bg-green-500"></div>
@@ -201,4 +201,5 @@ export default function Home() {
     </div>
   );
 }
+
 
