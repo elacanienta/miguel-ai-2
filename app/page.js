@@ -200,6 +200,23 @@ export default function Home() {
                         {msg.content}
                       </ReactMarkdown>
                     </div>
+                    
+                    {/* Model Indicator - Only for assistant messages */}
+                    {msg.role === 'assistant' && msg.model && (
+                      <div className="mt-3">
+                        <div className="border-t border-gray-200 mb-2"></div>
+                        <div className="inline-flex items-center px-3 py-1 rounded-full bg-gray-100 border border-gray-200">
+                          <svg className="w-3 h-3 text-gray-500 mr-1.5" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10 3.5a1.5 1.5 0 013 0V4a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-.5a1.5 1.5 0 000 3h.5a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-.5a1.5 1.5 0 00-3 0v.5a1 1 0 01-1 1H6a1 1 0 01-1-1v-3a1 1 0 00-1-1h-.5a1.5 1.5 0 010-3H4a1 1 0 001-1V6a1 1 0 011-1h3a1 1 0 001-1v-.5z" />
+                          </svg>
+                          <span className="text-xs font-medium text-gray-600">
+                            {msg.model === 'groq' && 'Llama 3.3 70B'}
+                            {msg.model === 'gemini' && 'Gemma 3 27B'}
+                            {msg.model === 'mistral' && 'Mistral Large'}
+                          </span>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}
@@ -271,6 +288,7 @@ export default function Home() {
     </div>
   );
 }
+
 
 
 
