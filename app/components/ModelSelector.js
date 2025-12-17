@@ -25,7 +25,7 @@ export default function ModelSelector({ selectedModel, onModelChange }) {
     },
     {
       id: 'gemini',
-      name: 'Gemini 2.0 Flash',
+      name: 'Gemma 3 27B',
       provider: 'Google',
       description: 'Google\'s latest AI'
     },
