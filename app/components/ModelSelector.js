@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 
-export default function ModelSelector() {
+export default function ModelSelector({ selectedModel, onModelChange }) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -21,26 +21,23 @@ export default function ModelSelector() {
       id: 'groq',
       name: 'Llama 3.3 70B',
       provider: 'Groq',
-      description: 'Fast and efficient (Current)',
-      isSelected: true
+      description: 'Fast and efficient'
     },
     {
       id: 'gemini',
       name: 'Gemini Pro',
       provider: 'Google',
-      description: 'Google\'s advanced AI',
-      isSelected: false
+      description: 'Google\'s advanced AI'
     },
     {
       id: 'openai',
       name: 'GPT-4o Mini',
       provider: 'OpenAI',
-      description: 'Most capable AI model',
-      isSelected: false
+      description: 'Most capable AI model'
     }
   ];
 
-  const selectedModel = models.find(m => m.isSelected);
+  const currentModel = models.find(m => m.id === selectedModel);
 
   return (
     <div className="relative" ref={dropdownRef}>
@@ -49,7 +46,7 @@ export default function ModelSelector() {
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-1 px-3 py-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
       >
-        <span className="text-xs font-medium text-gray-700">{selectedModel?.name}</span>
+        <span className="text-xs font-medium text-gray-700">{currentModel?.name}</span>
         <svg 
           className={`w-3 h-3 text-gray-500 transition-transform ${isOpen ? 'rotate-180' : ''}`} 
           fill="none" 
@@ -60,21 +57,20 @@ export default function ModelSelector() {
         </svg>
       </button>
 
-      {/* Dropdown Menu - Opens Upward */}
+      {/* Dropdown Menu */}
       {isOpen && (
         <div className="absolute bottom-full left-0 mb-2 w-80 bg-white rounded-2xl border border-gray-200 shadow-xl z-50 overflow-hidden">
           <div className="p-3">
-            {/* Model Options */}
             <div className="space-y-1">
               {models.map((model) => (
                 <button
                   key={model.id}
                   onClick={() => {
-                    console.log('Selected:', model.name);
+                    onModelChange(model.id);
                     setIsOpen(false);
                   }}
                   className={`w-full text-left p-3 rounded-xl transition-all duration-200 ${
-                    model.isSelected 
+                    selectedModel === model.id
                       ? 'bg-blue-50 border-2 border-blue-200' 
                       : 'border-2 border-transparent hover:bg-gray-50'
                   }`}
@@ -84,7 +80,7 @@ export default function ModelSelector() {
                       <div className="font-semibold text-gray-900 text-sm">{model.name}</div>
                       <div className="text-xs text-gray-500">{model.provider}</div>
                     </div>
-                    {model.isSelected && (
+                    {selectedModel === model.id && (
                       <svg className="w-5 h-5 text-blue-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                       </svg>
