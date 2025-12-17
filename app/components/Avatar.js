@@ -11,7 +11,6 @@ export default function Avatar({ isSpeaking, videoToPlay, onVideoEnd }) {
   const [showIntro, setShowIntro] = useState(false);
   const [isIdle, setIsIdle] = useState(true);
 
-  // Start with idle video
   useEffect(() => {
     if (idleVideoRef.current) {
       idleVideoRef.current.play();
@@ -64,13 +63,13 @@ export default function Avatar({ isSpeaking, videoToPlay, onVideoEnd }) {
   };
 
   return (
-    <div className="w-full h-full relative bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center overflow-hidden">
+    <div className="w-full h-full relative flex items-center justify-center overflow-hidden">
       
-      {/* Red Play Button - Shows only during idle */}
+      {/* Red Play Button - Bottom Center */}
       {isIdle && (
         <button
           onClick={playIntro}
-          className="absolute bottom-4 left-4 z-20 w-12 h-12 rounded-full bg-red-600 hover:bg-red-700 shadow-lg flex items-center justify-center transition-all duration-200 hover:scale-110 group"
+          className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20 w-12 h-12 rounded-full bg-red-600 hover:bg-red-700 shadow-lg flex items-center justify-center transition-all duration-200 hover:scale-110"
           aria-label="Play intro"
         >
           <svg className="w-6 h-6 text-white ml-0.5" fill="currentColor" viewBox="0 0 20 20">
