@@ -2,29 +2,130 @@ import { NextResponse } from 'next/server';
 
 export async function POST(req) {
   try {
-    const { message } = await req.json();
+    const { message, model = 'groq' } = await req.json();
     
-    const GROQ_API_KEY = process.env.GROQ_API_KEY;
-    
-    if (!GROQ_API_KEY) {
-      return NextResponse.json(
-        { error: 'API key not configured' },
-        { status: 500 }
-      );
+    if (model === 'groq') {
+      return await handleGroq(message);
+    } else if (model === 'gemini') {
+      return await handleGemini(message);
+    } else if (model === 'mistral') {
+      return await handleMistral(message);
     }
     
-    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    return NextResponse.json({ error: 'Invalid model' }, { status: 400 });
+  } catch (error) {
+    console.error('Error:', error);
+    return NextResponse.json(
+      { error: 'Failed to get response: ' + error.message },
+      { status: 500 }
+    );
+  }
+}
+
+async function handleGroq(message) {
+  const GROQ_API_KEY = process.env.GROQ_API_KEY;
+  
+  if (!GROQ_API_KEY) {
+    return NextResponse.json({ error: 'Groq API key not configured' }, { status: 500 });
+  }
+  
+  const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${GROQ_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      model: 'llama-3.3-70b-versatile',
+      messages: [
+        { role: 'system', content: getSystemPrompt() },
+        { role: 'user', content: message }
+      ],
+      temperature: 0.7,
+      max_tokens: 200,
+    }),
+  });
+
+  const data = await response.json();
+  
+  if (!response.ok) {
+    throw new Error(data.error?.message || 'Groq API request failed');
+  }
+  
+  return NextResponse.json({ message: data.choices[0].message.content });
+}
+
+async function handleGemini(message) {
+  const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+  
+  if (!GEMINI_API_KEY) {
+    return NextResponse.json({ error: 'Gemini API key not configured' }, { status: 500 });
+  }
+  
+  const response = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${GEMINI_API_KEY}`,
+    {
       method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${GROQ_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
-        messages: [
-          {
-            role: 'system',
-            content: `You are Miguel Lacanienta, a Computer Science graduate with AI specialization from Mapúa University (2021-2025).
+        contents: [{
+          parts: [{
+            text: `${getSystemPrompt()}\n\nUser: ${message}`
+          }]
+        }],
+        generationConfig: {
+          temperature: 0.7,
+          maxOutputTokens: 200,
+        }
+      }),
+    }
+  );
+
+  const data = await response.json();
+  
+  if (!response.ok) {
+    throw new Error('Gemini API request failed');
+  }
+  
+  const aiMessage = data.candidates[0].content.parts[0].text;
+  return NextResponse.json({ message: aiMessage });
+}
+
+async function handleMistral(message) {
+  const MISTRAL_API_KEY = process.env.MISTRAL_API_KEY;
+  
+  if (!MISTRAL_API_KEY) {
+    return NextResponse.json({ error: 'Mistral API key not configured' }, { status: 500 });
+  }
+  
+  const response = await fetch('https://api.mistral.ai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${MISTRAL_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      model: 'mistral-large-latest',
+      messages: [
+        { role: 'system', content: getSystemPrompt() },
+        { role: 'user', content: message }
+      ],
+      temperature: 0.7,
+      max_tokens: 200,
+    }),
+  });
+
+  const data = await response.json();
+  
+  if (!response.ok) {
+    throw new Error(data.error?.message || 'Mistral API request failed');
+  }
+  
+  return NextResponse.json({ message: data.choices[0].message.content });
+}
+
+function getSystemPrompt() {
+  return `You are Miguel Lacanienta, a Computer Science graduate with AI specialization from Mapúa University (2021-2025).
 
 SKILLS:
 - Power Platform: Power Automate, Power Apps, Dataverse
@@ -48,48 +149,11 @@ OBJECTIVE: Looking for Programming or DevOps roles using Power Platform, Python,
 
 CRITICAL RULES:
 1. ONLY answer questions about Miguel's resume, skills, projects, certifications, education, or career
-2. If asked off-topic questions (weather, news, recipes, general tasks), respond: "I'm here to discuss Miguel's qualifications. Ask me about his skills, projects, or certifications!"
+2. If asked off-topic questions, respond: "I'm here to discuss Miguel's qualifications. Ask me about his skills, projects, or certifications!"
 3. ALWAYS use markdown bullet points with dash (-) or asterisk (*)
 4. Use **bold** for important terms
 5. Keep responses brief (2-4 bullet points max)
 6. Start lists with a brief intro line, then bullet points
 
-Example response format:
-Here are my main projects:
-- **PPE Detection CCTV** - Computer vision with YOLOv9
-- **Ollopa Extension** - Python/Selenium automation
-- **Food Price Prediction** - Time-series analysis with ARIMA
-
-Always format like this. Never write long paragraphs. Stay on-topic about Miguel's background only.`
-          },
-          {
-            role: 'user',
-            content: message
-          }
-        ],
-        temperature: 0.7,
-        max_tokens: 200,
-      }),
-    });
-
-    const data = await response.json();
-    
-    if (!response.ok) {
-      console.error('Groq API Error:', data);
-      return NextResponse.json(
-        { error: data.error?.message || 'API request failed' },
-        { status: response.status }
-      );
-    }
-    
-    const aiMessage = data.choices[0].message.content;
-
-    return NextResponse.json({ message: aiMessage });
-  } catch (error) {
-    console.error('Error:', error);
-    return NextResponse.json(
-      { error: 'Failed to get response: ' + error.message },
-      { status: 500 }
-    );
-  }
+Always format with bullets. Never write long paragraphs. Stay on-topic about Miguel's background only.`;
 }
