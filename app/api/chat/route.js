@@ -4,6 +4,39 @@ export async function POST(req) {
   try {
     const { message, model = 'groq' } = await req.json();
     
+    // Backend validation
+    if (!message || typeof message !== 'string') {
+      return NextResponse.json({ error: 'Invalid message' }, { status: 400 });
+    }
+
+    if (message.length > 500) {
+      return NextResponse.json({ error: 'Message too long' }, { status: 400 });
+    }
+
+    // Detect prompt injection attempts
+    const injectionPatterns = [
+      /ignore.*previous.*instructions?/i,
+      /disregard.*above/i,
+      /forget.*you.*are/i,
+      /you.*are.*now/i,
+      /new.*instructions?:/i,
+      /system.*prompt/i,
+      /override.*settings?/i,
+      /\[system\]/i,
+      /\<system\>/i,
+      /act.*as.*different/i,
+      /pretend.*you.*are/i,
+    ];
+
+    const hasInjection = injectionPatterns.some(pattern => pattern.test(message));
+
+    if (hasInjection) {
+      return NextResponse.json({ 
+        message: "I'm here to discuss Miguel's qualifications. Please ask about his skills, projects, or certifications." 
+      });
+    }
+
+    // Route to appropriate model
     if (model === 'groq') {
       return await handleGroq(message);
     } else if (model === 'gemini') {
@@ -16,7 +49,7 @@ export async function POST(req) {
   } catch (error) {
     console.error('Error:', error);
     return NextResponse.json(
-      { error: 'Failed to get response: ' + error.message },
+      { error: 'Failed to get response' },
       { status: 500 }
     );
   }
@@ -166,3 +199,4 @@ RESPONSE RULES:
 
 Always format with bullets. Never write long paragraphs. Stay on-topic about Miguel's background only.`;
 }
+
