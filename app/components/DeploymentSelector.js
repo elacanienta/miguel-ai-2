@@ -23,13 +23,13 @@ const deployments = [
   },
   {
     name: 'Cloudflare',
-    url: 'https://miguel-ai-2.pages.dev/',
+    url: 'https://miguel-ai.pages.dev/',
     color: 'bg-orange-500',
     textColor: 'text-orange-600'
   },
   {
     name: 'GitHub',
-    url: 'https://elacanienta.github.io/me-2/',
+    url: 'https://miggyL.github.io/me/',
     color: 'bg-black',
     textColor: 'text-black'
   }
