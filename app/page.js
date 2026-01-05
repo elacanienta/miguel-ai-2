@@ -13,6 +13,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [currentVideo, setCurrentVideo] = useState(null);
   const [selectedModel, setSelectedModel] = useState('groq'); // ADD THIS
+  const [isAltAvatar, setIsAltAvatar] = useState(false);
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -90,11 +91,16 @@ export default function Home() {
   };
   
   const playVideo = (videoName) => {
-    setCurrentVideo(`/${videoName}.mp4`);
+    const suffix = isAltAvatar ? 'ALT' : '';
+    setCurrentVideo(`/${videoName}${suffix}.mp4`);
   };
   
   const handleVideoEnd = () => {
     setCurrentVideo(null);
+  };
+
+  const handleAvatarSwitch = () => {
+    setIsAltAvatar(prev => !prev);
   };
 
   const quickPrompts = [
@@ -109,35 +115,39 @@ export default function Home() {
       {/* Top Bar - Light Gemini Style */}
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200">
         <div className="max-w-5xl mx-auto px-6 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-3">
+          <a href="https://miguel-app.pages.dev/" className="flex items-center gap-3 hover:opacity-80 transition-opacity cursor-pointer">
             <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-semibold text-sm">
               M
             </div>
             <span className="text-lg font-medium text-gray-800">MiguelAI</span>
-          </div>
+          </a>
           <DeploymentSelector />
         </div>
       </header>
 
       {/* Main Content */}
-      <div className="max-w-4xl mx-auto px-4 py-4">
-        
-        {/* Avatar Card - Compact */}
-        <div className="mb-6 bg-white rounded-2xl p-4 border border-gray-200 shadow-sm relative">
+      <div className="max-w-4xl mx-auto px-4 py-8">
+
+        {/* Avatar Card */}
+        <div className="mb-6 bg-white rounded-2xl p-6 border border-gray-200 shadow-sm relative">
           <QRCode />
           <div className="grid md:grid-cols-3 gap-6 items-center">
             <div className="md:col-span-1">
               <div className="aspect-[2/3] rounded-xl overflow-hidden">
-                <Avatar 
-                  isSpeaking={isLoading} 
+                <Avatar
+                  isSpeaking={isLoading}
                   videoToPlay={currentVideo}
                   onVideoEnd={handleVideoEnd}
+                  isAltAvatar={isAltAvatar}
+                  onAvatarSwitch={handleAvatarSwitch}
                 />
               </div>
             </div>
-            <div className="md:col-span-2 space-y-3">
-              <h2 className="text-2xl font-semibold text-gray-900">Miguel Lacanienta</h2>
-              <p className="text-gray-600">BS Computer Science • AI Specialization • Mapúa University</p>
+            <div className="md:col-span-2 space-y-4">
+              <div>
+                <h2 className="text-2xl font-semibold text-gray-900">Miguel Lacanienta</h2>
+                <p className="text-gray-600 mt-1">BS Computer Science • AI Specialization • Mapúa University</p>
+              </div>
               <div className="flex flex-wrap gap-2">
                 <button 
                   onClick={() => playVideo('Objective')}

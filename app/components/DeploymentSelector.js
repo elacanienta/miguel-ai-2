@@ -29,7 +29,7 @@ const deployments = [
   },
   {
     name: 'GitHub',
-    url: 'https://miggyL.github.io/me/',
+    url: 'https://miggyL.github.io/miguel-app/',
     color: 'bg-black',
     textColor: 'text-black'
   }
