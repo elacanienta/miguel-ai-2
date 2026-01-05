@@ -126,10 +126,10 @@ export default function Home() {
       </header>
 
       {/* Main Content */}
-      <div className="max-w-4xl mx-auto px-4 py-4">
-        
-        {/* Avatar Card - Compact */}
-        <div className="mb-6 bg-white rounded-2xl p-4 border border-gray-200 shadow-sm relative">
+      <div className="max-w-4xl mx-auto px-4 py-8">
+
+        {/* Avatar Card */}
+        <div className="mb-6 bg-white rounded-2xl p-6 border border-gray-200 shadow-sm relative">
           <QRCode />
           <div className="grid md:grid-cols-3 gap-6 items-center">
             <div className="md:col-span-1">
@@ -143,9 +143,11 @@ export default function Home() {
                 />
               </div>
             </div>
-            <div className="md:col-span-2 space-y-3">
-              <h2 className="text-2xl font-semibold text-gray-900">Miguel Lacanienta</h2>
-              <p className="text-gray-600">BS Computer Science • AI Specialization • Mapúa University</p>
+            <div className="md:col-span-2 space-y-4">
+              <div>
+                <h2 className="text-2xl font-semibold text-gray-900">Miguel Lacanienta</h2>
+                <p className="text-gray-600 mt-1">BS Computer Science • AI Specialization • Mapúa University</p>
+              </div>
               <div className="flex flex-wrap gap-2">
                 <button 
                   onClick={() => playVideo('Objective')}
