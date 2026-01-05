@@ -5,7 +5,7 @@ import { useState, useEffect, useRef } from 'react';
 const deployments = [
   {
     name: 'Vercel',
-    url: 'https://miguel-ai-2.vercel.app/',
+    url: 'https://miguel-ai.vercel.app/',
     color: 'bg-black',
     textColor: 'text-black'
   },
@@ -17,7 +17,7 @@ const deployments = [
   },
   {
     name: 'Render',
-    url: 'https://miguel-ai-2.onrender.com/',
+    url: 'https://miguel-ai.onrender.com/',
     color: 'bg-purple-500',
     textColor: 'text-purple-600'
   },
