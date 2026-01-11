@@ -6,6 +6,7 @@ import QRCode from './components/QRCode';
 import ModelSelector from './components/ModelSelector';
 import DeploymentSelector from './components/DeploymentSelector';
 import ReactMarkdown from 'react-markdown';
+import { getVideoPath } from '@/lib/assets';
 
 export default function Home() {
   const [messages, setMessages] = useState([]);
@@ -14,6 +15,7 @@ export default function Home() {
   const [currentVideo, setCurrentVideo] = useState(null);
   const [selectedModel, setSelectedModel] = useState('groq'); // ADD THIS
   const [isAltAvatar, setIsAltAvatar] = useState(false);
+  const [language, setLanguage] = useState('english'); // 'english' or 'german'
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -91,16 +93,19 @@ export default function Home() {
   };
   
   const playVideo = (videoName) => {
-    const suffix = isAltAvatar ? 'ALT' : '';
-    setCurrentVideo(`/${videoName}${suffix}.mp4`);
+    setCurrentVideo(getVideoPath(videoName, { isReal: isAltAvatar, language }));
   };
-  
+
   const handleVideoEnd = () => {
     setCurrentVideo(null);
   };
 
   const handleAvatarSwitch = () => {
     setIsAltAvatar(prev => !prev);
+  };
+
+  const handleLanguageToggle = () => {
+    setLanguage(language === 'english' ? 'german' : 'english');
   };
 
   const quickPrompts = [
@@ -140,6 +145,8 @@ export default function Home() {
                   onVideoEnd={handleVideoEnd}
                   isAltAvatar={isAltAvatar}
                   onAvatarSwitch={handleAvatarSwitch}
+                  language={language}
+                  onLanguageToggle={handleLanguageToggle}
                 />
               </div>
             </div>
@@ -149,28 +156,28 @@ export default function Home() {
                 <p className="text-gray-600 mt-1">BS Computer Science • AI Specialization • Mapúa University</p>
               </div>
               <div className="flex flex-wrap gap-2">
-                <button 
-                  onClick={() => playVideo('Objective')}
+                <button
+                  onClick={() => playVideo('objective')}
                   className="px-4 py-2 rounded-full bg-blue-50 text-blue-700 text-sm font-medium border border-blue-200 hover:bg-blue-100 hover:border-blue-300 transition-all duration-200 cursor-pointer">
                   Objective
                 </button>
                 <button
-                  onClick={() => playVideo('Skills')}
+                  onClick={() => playVideo('skills')}
                   className="px-4 py-2 rounded-full bg-purple-50 text-purple-700 text-sm font-medium border border-purple-200 hover:bg-purple-100 hover:border-purple-300 transition-all duration-200 cursor-pointer">
                   Skills
                 </button>
                 <button
-                  onClick={() => playVideo('Certifications')}
+                  onClick={() => playVideo('certs')}
                   className="px-4 py-2 rounded-full bg-green-50 text-green-700 text-sm font-medium border border-green-200 hover:bg-green-100 hover:border-green-300 transition-all duration-200 cursor-pointer">
                   Certifications
                 </button>
                 <button
-                  onClick={() => playVideo('AppliedSkills')}
+                  onClick={() => playVideo('applied')}
                   className="px-4 py-2 rounded-full bg-orange-50 text-orange-700 text-sm font-medium border border-orange-200 hover:bg-orange-100 hover:border-orange-300 transition-all duration-200 cursor-pointer">
                   Applied Skills
                 </button>
                 <button
-                  onClick={() => playVideo('Projects')}
+                  onClick={() => playVideo('projects')}
                   className="px-4 py-2 rounded-full bg-pink-50 text-pink-700 text-sm font-medium border border-pink-200 hover:bg-pink-100 hover:border-pink-300 transition-all duration-200 cursor-pointer">
                   Projects
                 </button>
